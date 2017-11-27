@@ -1,8 +1,6 @@
 #include "bullet.h"
 #include "wall.h"
 
-
-/////////////////////////////////////
 // Class Bullet
 Bullet::Bullet()
 {
@@ -11,7 +9,6 @@ Bullet::Bullet()
 
 	setTextureRect(kBulletImage);
 }
-
 
 void Bullet::render(sf::RenderWindow* rw)
 {
