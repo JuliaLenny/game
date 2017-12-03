@@ -1,8 +1,5 @@
 #include "gameObject.h"
 #include "level.h"
-
-
-/////////////////////////////////////
 // Class GameObject
 GameObject::GameObject()
 {
