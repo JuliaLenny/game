@@ -1,19 +1,13 @@
 #pragma once
-
-
-/////////////////////////////////////
 // Include
-#include "tank.h"
-
-
-/////////////////////////////////////
-// Class TankEnemy
-class TankEnemy
-	: public Tank
+#include "ghost.h"
+// Class GhostEnemy
+class GhostEnemy
+	: public Ghost
 {
 public:
-	TankEnemy();
-	~TankEnemy();
+	GhostEnemy();
+	~GhostEnemy();
 
 	void update(float dt);
 
