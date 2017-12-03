@@ -16,4 +16,4 @@ public:
 
 private:
 	GameObjectType m_ownerType;
-}
+};
