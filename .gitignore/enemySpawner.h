@@ -3,16 +3,12 @@
 #include "gameObject.h"
 #include "level.h"
 
-
-/////////////////////////////////////
-// Class Tank
+// Class Ghost
 class EnemySpawner
 	: public GameObject
 {
 public:
 	EnemySpawner();
-
-
 	virtual void update(float dt);
 
 private:
