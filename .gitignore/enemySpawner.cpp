@@ -1,5 +1,5 @@
 #include "enemySpawner.h"
-#include "tankEnemy.h"
+#include "ghostEnemy.h"
 #include "utils.h"
 
 
@@ -20,17 +20,14 @@ EnemySpawner::EnemySpawner()
 void EnemySpawner::update(float dt)
 {
 	GameObject::update(dt);
-
 	m_spawnTimer += dt;
 
 	if (m_spawnTimer > m_spawnTime)
 	{
 		m_spawnTimer = 0.0f;
-
-		int enemiesOnLevel = m_game->getObjectsCount(GameObjectType_TankEnemy);
+		int enemiesOnLevel = m_game->getObjectsCount(GameObjectType_GhostEnemy);
 		int enemiesStorageLeft = kEnemiesPerLevel - enemiesOnLevel - m_game->getDiedEnemiesCount();
-
-		if (enemiesStorageLeft > 0 && enemiesOnLevel < kEnemiesPerLevelInOneMoment)
-			m_game->createObject(GameObjectType_TankEnemy, getX(), getY());
+		    if (enemiesStorageLeft > 0 && enemiesOnLevel < kEnemiesPerLevelInOneMoment)
+			    m_game->createObject(GameObjectType_GhostEnemy, getX(), getY());
 	}
 }
