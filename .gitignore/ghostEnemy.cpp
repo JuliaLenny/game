@@ -1,14 +1,11 @@
-#include "tankEnemy.h"
+#include "ghostEnemy.h"
 #include "utils.h"
 #include "wall.h"
 #include "bullet.h"
-
-
-/////////////////////////////////////
 // Class GameObject
-TankEnemy::TankEnemy()
+GhostEnemy::GhostEnemy()
 {
-	m_type = GameObjectType_TankEnemy;
+	m_type = GameObjectType_GhostEnemy;
 	m_analizeTime = kEnemyAIAnalizeTime;
 	m_analizeTimer = GetRandomFloat(0.0, m_analizeTime);
 	m_lastAnalizeX = 0.0;
@@ -20,14 +17,14 @@ TankEnemy::TankEnemy()
 	setSpriteColor(sf::Color(0, 165, 226));
 }
 
-TankEnemy::~TankEnemy()
+GhostEnemy::~GhostEnemy()
 {
 	m_game->increaseDiedEnemiesCount();
 }
 
-void TankEnemy::update(float dt)
+void GhostEnemy::update(float dt)
 {
-	Tank::update(dt);
+	Ghost::update(dt);
 
 	m_analizeTimer += dt;
 	if (m_analizeTimer >= m_analizeTime)
@@ -37,7 +34,7 @@ void TankEnemy::update(float dt)
 	}
 }
 
-void TankEnemy::analize()
+void GhostEnemy::analize()
 {
 	float x = 0.0;
 	float y = 0.0;
@@ -69,14 +66,14 @@ void TankEnemy::analize()
 	// Defend from bullet
 	if (object->getType() == GameObjectType_Bullet)
 	{
-		if (((Bullet*)object)->getOwnerType() == GameObjectType_TankPlayer)
+		if (((Bullet*)object)->getOwnerType() == GameObjectType_GhostPlayer)
 			fire();
 
 		return;
 	}
 
 	// Attack!!
-	if (object->getType() == GameObjectType_TankPlayer)
+	if (object->getType() == GameObjectType_GhostPlayer)
 	{
 		fire();
 		return;
@@ -116,7 +113,7 @@ void TankEnemy::analize()
 	m_lastAnalizeY = getY();
 }
 
-void TankEnemy::moveRandomDirection()
+void GhostEnemy::moveRandomDirection()
 {
 	Direction prevDirection = getDirection();
 	Direction newDirection;
