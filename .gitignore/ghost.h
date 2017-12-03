@@ -1,15 +1,14 @@
 #pragma once
-
 // Include
 #include "gameObject.h"
 #include "level.h"
 
-// Class Tank
-class Tank
+// Class Ghost
+class Ghost
 	: public GameObject
 {
 public:
-	Tank();
+	Ghost();
 
 	virtual void update(float dt);
 	virtual void render(sf::RenderWindow* rw);
