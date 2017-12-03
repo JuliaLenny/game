@@ -1,12 +1,9 @@
-#include "tankPlayer.h"
+#include "ghostPlayer.h"
 #include "utils.h"
-
-
-/////////////////////////////////////
 // Class GameObject
-TankPlayer::TankPlayer()
+GhostPlayer::GhostPlayer()
 {
-	m_type = GameObjectType_TankPlayer;
+	m_type = GameObjectType_GhostPlayer;
 
 	m_keyLeft = 0;
 	m_keyRight = 0;
@@ -20,9 +17,9 @@ TankPlayer::TankPlayer()
 	m_destroyAfterDeath = false;
 }
 
-void TankPlayer::update(float dt)
+void GhostPlayer::update(float dt)
 {
-	Tank::update(dt);
+	Ghost::update(dt);
 
 	if (IsKeyDown(m_keyLeft))
 		move(Direction_Left);
@@ -45,7 +42,7 @@ void TankPlayer::update(float dt)
 		fire();
 }
 
-void TankPlayer::setKeys(int keyLeft, int keyRight, int keyUp, int keyDown, int keyFire)
+void GhostPlayer::setKeys(int keyLeft, int keyRight, int keyUp, int keyDown, int keyFire)
 {
 	m_keyLeft = keyLeft;
 	m_keyRight = keyRight;
