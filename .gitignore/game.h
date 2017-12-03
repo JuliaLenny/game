@@ -43,10 +43,7 @@ private:
 	sf::RenderWindow* m_renderWindow;
 
 	GameObject* m_objects[kObjectsCountMax];
-
-	//GameObject* m_base;
-	GameObject* m_player1;
-	//GameObject* m_player2;
+	GameObject* m_player;
 
 	int m_diedEnemiesCount;
 };
