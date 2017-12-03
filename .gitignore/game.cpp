@@ -5,21 +5,18 @@
 #include <Windows.h>
 #include "level.h"
 #include "wall.h"
+#include <conio.h>
 
 //#include "base.h"
 
 #include "bullet.h"
-#include "tankPlayer.h"
-#include "tankEnemy.h"
+#include "ghostPlayer.h"
+#include "ghostEnemy.h"
 #include "enemySpawner.h"
 
-
-/////////////////////////////////////
 // Global
 sf::Texture* g_atlas00 = 0;
 
-
-/////////////////////////////////////
 // Class Game
 Game::Game()
 {
@@ -29,10 +26,8 @@ Game::Game()
 	for (int i = 0; i < kObjectsCountMax; i++)
 		m_objects[i] = 0;
 
-	m_player1 = 0;
-
+	m_player = 0;
 	m_diedEnemiesCount = 0;
-
 	m_renderWindow = 0;
 }
 
@@ -51,7 +46,7 @@ void Game::setupSystem()
 
 	m_renderWindow = new sf::RenderWindow(
 		sf::VideoMode(kPixelsPerCell * kScreenColumns, kPixelsPerCell * kScreenRows, 32),
-		"City",
+		"Ghost's City",
 		sf::Style::Titlebar | sf::Style::Close);
 
 	g_atlas00 = new sf::Texture();
@@ -89,12 +84,12 @@ void Game::initialize()
 			}
 
 			
-			case CellSymbol_Player1:
+			case CellSymbol_Player:
 			{
-				TankPlayer* player1 = (TankPlayer*)createObject(GameObjectType_TankPlayer, c + 0.5, r + 0.5);
-				player1->setSpriteColor(sf::Color(255, 255, 255));
-				player1->setKeys('A', 'D', 'W', 'S', VK_SPACE);
-				m_player1 = player1;
+				GhostPlayer* player = (GhostPlayer*)createObject(GameObjectType_GhostPlayer, c + 0.5, r + 0.5);
+				player->setSpriteColor(sf::Color(255, 255, 255));
+				player->setKeys('A', 'D', 'W', 'S', VK_SPACE);
+				m_player = player;
 
 				break;
 			}
@@ -120,16 +115,14 @@ bool Game::loop()
 	float deltaTime = float(deltaClock) / CLOCKS_PER_SEC;
 	m_clockLastFrame = clockNow;
 
-
-	sf::Event event;
+    sf::Event event;
 	while (m_renderWindow->pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
 			m_renderWindow->close();
 	}
 
-
-	render();
+    render();
 	update(deltaTime);
 
 	return m_isGameActive;
@@ -143,6 +136,9 @@ void Game::shutdown()
 			delete m_objects[i];
 			m_objects[i] = 0;
 		}
+	
+	
+	
 }
 
 void Game::render()
@@ -158,9 +154,7 @@ void Game::render()
 			m_objects[i]->render(m_renderWindow);
 			objectsCount++;
 		}
-
-	// End frame
-	m_renderWindow->display();
+		m_renderWindow->display();
 }
 
 void Game::update(float dt)
@@ -175,14 +169,13 @@ void Game::update(float dt)
 		}
 
 	// Player1 destroyed
-	if (m_player1 && m_player1->getHealth() <= 0)
+	if (m_player && m_player->getHealth() <= 0)
 	{
-		destroyObject(m_player1);
-		m_player1 = NULL;
+		destroyObject(m_player);
+		m_player = NULL;
 		initialize();
 	}
-
-	// All enemies destroyed
+    // All enemies destroyed
 	if (m_diedEnemiesCount == kEnemiesPerLevel)
 		initialize();
 }
@@ -268,24 +261,19 @@ GameObject* Game::createObject(GameObjectType type, float x, float y)
 			{
 			case GameObjectType_Wall:			object = new Wall();			break;
 			case GameObjectType_Bullet:			object = new Bullet();			break;
-			case GameObjectType_TankPlayer:		object = new TankPlayer();		break;
-			case GameObjectType_TankEnemy:		object = new TankEnemy();		break;
+			case GameObjectType_GhostPlayer:	object = new GhostPlayer();		break;
+			case GameObjectType_GhostEnemy:		object = new GhostEnemy();		break;
 			case GameObjectType_EnemySpawner:	object = new EnemySpawner();	break;
 			}
-
 			if (object == 0)
 				return 0;
-
 			object->setGame(this);
-
 			if (moveObjectTo(object, x, y) == false)
 			{
 				delete object;
 				return 0;
 			}
-
 			m_objects[i] = object;
-
 			return object;
 		}
 	}
@@ -301,7 +289,6 @@ void Game::destroyObject(GameObject* object)
 		{
 			delete m_objects[i];
 			m_objects[i] = 0;
-
 			return;
 		}
 	}
