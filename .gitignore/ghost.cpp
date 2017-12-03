@@ -1,19 +1,19 @@
-#include "tank.h"
+#include "ghost.h"
 #include "bullet.h"
 
 // Class GameObject
-Tank::Tank()
+Ghost::Ghost()
 {
-	m_type = GameObjectType_Tank;
+	m_type = GameObjectType_Ghost;
 
-	m_width = kTankSize;
-	m_height = kTankSize;
+	m_width = kGhostSize;
+	m_height = kGhostSize;
 
 	m_speed = 0;
 	m_fireCooldownTime = 0.0;
 }
 
-void Tank::update(float dt)
+void Ghost::update(float dt)
 {
 	GameObject::update(dt);
 
@@ -21,16 +21,16 @@ void Tank::update(float dt)
 		m_fireCooldownTime -= dt;
 }
 
-void Tank::render(sf::RenderWindow* rw)
+void Ghost::render(sf::RenderWindow* rw)
 {
-	sf::IntRect texRect = kTankImage;
+	sf::IntRect texRect = kGhostImage;
 	texRect.left += m_width * kPixelsPerCell * m_direction;
 	setTextureRect(texRect);
 
 	GameObject::render(rw);
 }
 
-void Tank::move(Direction direction)
+void Ghost::move(Direction direction)
 {
 	setDirection(direction);
 
@@ -46,12 +46,12 @@ void Tank::move(Direction direction)
 	}
 }
 
-void Tank::fire()
+void Ghost::fire()
 {
 	if (m_fireCooldownTime > 0)
 		return;
 
-	m_fireCooldownTime = kTankFireCooldownTime;
+	m_fireCooldownTime = kGhostFireCooldownTime;
 
 	float x = 0.0;
 	float y = 0.0;
@@ -77,7 +77,7 @@ void Tank::fire()
 	}
 }
 
-void Tank::calculateFrontCellPosition(float* x, float* y)
+void Ghost::calculateFrontCellPosition(float* x, float* y)
 {
 	switch (m_direction)
 	{
