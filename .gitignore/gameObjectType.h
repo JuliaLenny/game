@@ -8,5 +8,5 @@ enum GameObjectType
 	GameObjectType_GhostEnemy,
 	GameObjectType_Wall,
 	GameObjectType_Bullet,
-	GameObjectType_EnemySpawner,
+	GameObjectType_Enemy,
 };
