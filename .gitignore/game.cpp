@@ -12,7 +12,7 @@
 #include "bullet.h"
 #include "ghostPlayer.h"
 #include "ghostEnemy.h"
-#include "enemySpawner.h"
+#include "enemy.h"
 
 // Global
 sf::Texture* g_atlas00 = 0;
@@ -45,12 +45,12 @@ void Game::setupSystem()
 	srand(time(0));
 
 	m_renderWindow = new sf::RenderWindow(
-		sf::VideoMode(kPixelsPerCell * kScreenColumns, kPixelsPerCell * kScreenRows, 32),
+		sf::VideoMode(kPixels * kScreenColumns, kPixels * kScreenRows, 32),
 		"Ghost's City",
 		sf::Style::Titlebar | sf::Style::Close);
 
 	g_atlas00 = new sf::Texture();
-	g_atlas00->loadFromFile("image/atlas00.png");
+	g_atlas00->loadFromFile("atlas00.png");
 }
 
 void Game::initialize()
@@ -83,7 +83,7 @@ void Game::initialize()
 				break;
 			}
 
-			
+
 			case CellSymbol_Player:
 			{
 				GhostPlayer* player = (GhostPlayer*)createObject(GameObjectType_GhostPlayer, c + 0.5, r + 0.5);
@@ -94,9 +94,9 @@ void Game::initialize()
 				break;
 			}
 
-			case CellSymbol_EnemySpawner:
+			case CellSymbol_Enemy:
 			{
-				createObject(GameObjectType_EnemySpawner, c, r);
+				createObject(GameObjectType_Enemy, c, r);
 				break;
 			}
 			}
@@ -115,14 +115,14 @@ bool Game::loop()
 	float deltaTime = float(deltaClock) / CLOCKS_PER_SEC;
 	m_clockLastFrame = clockNow;
 
-    sf::Event event;
+	sf::Event event;
 	while (m_renderWindow->pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed)
 			m_renderWindow->close();
 	}
 
-    render();
+	render();
 	update(deltaTime);
 
 	return m_isGameActive;
@@ -136,9 +136,9 @@ void Game::shutdown()
 			delete m_objects[i];
 			m_objects[i] = 0;
 		}
-	
-	
-	
+
+
+
 }
 
 void Game::render()
@@ -154,7 +154,7 @@ void Game::render()
 			m_objects[i]->render(m_renderWindow);
 			objectsCount++;
 		}
-		m_renderWindow->display();
+	m_renderWindow->display();
 }
 
 void Game::update(float dt)
@@ -175,9 +175,13 @@ void Game::update(float dt)
 		m_player = NULL;
 		initialize();
 	}
-    // All enemies destroyed
-	if (m_diedEnemiesCount == kEnemiesPerLevel)
-		initialize();
+	// All enemies destroyed
+	if (m_diedEnemiesCount == kEnemiesLevel) {
+		m_renderWindow->clear(sf::Color(176, 196, 222));
+
+		m_renderWindow->display();
+
+	}
 }
 
 GameObject* Game::checkIntersects(float x, float y, float width, float height, GameObject* exceptObject)
@@ -263,7 +267,7 @@ GameObject* Game::createObject(GameObjectType type, float x, float y)
 			case GameObjectType_Bullet:			object = new Bullet();			break;
 			case GameObjectType_GhostPlayer:	object = new GhostPlayer();		break;
 			case GameObjectType_GhostEnemy:		object = new GhostEnemy();		break;
-			case GameObjectType_EnemySpawner:	object = new EnemySpawner();	break;
+			case GameObjectType_Enemy:	        object = new Enemy();	break;
 			}
 			if (object == 0)
 				return 0;
