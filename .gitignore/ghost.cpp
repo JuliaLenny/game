@@ -10,21 +10,21 @@ Ghost::Ghost()
 	m_height = kGhostSize;
 
 	m_speed = 0;
-	m_fireCooldownTime = 0.0;
+	m_recoveryTime = 0.0;
 }
 
 void Ghost::update(float dt)
 {
 	GameObject::update(dt);
 
-	if (m_fireCooldownTime > 0)
-		m_fireCooldownTime -= dt;
+	if (m_recoveryTime > 0)
+		m_recoveryTime -= dt;
 }
 
 void Ghost::render(sf::RenderWindow* rw)
 {
 	sf::IntRect texRect = kGhostImage;
-	texRect.left += m_width * kPixelsPerCell * m_direction;
+	texRect.left += m_width * kPixels * m_direction;
 	setTextureRect(texRect);
 
 	GameObject::render(rw);
@@ -48,10 +48,10 @@ void Ghost::move(Direction direction)
 
 void Ghost::fire()
 {
-	if (m_fireCooldownTime > 0)
+	if (m_recoveryTime > 0)
 		return;
 
-	m_fireCooldownTime = kGhostFireCooldownTime;
+	m_recoveryTime = kGhostRecoveryTime;
 
 	float x = 0.0;
 	float y = 0.0;
