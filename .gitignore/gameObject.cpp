@@ -1,86 +1,86 @@
-#include "gameObject.h"
-#include "level.h"
+#pragma once
+// Include
+#include "direction.h"
+#include "game.h"
+#include "gameObjectType.h"
+
+// педварительное объявление класса
+class Game;
+
 // Class GameObject
-GameObject::GameObject()
+class GameObject
 {
-	m_game = 0;
-	m_type = GameObjectType_None;
-
-	m_x = 0.0;
-	m_y = 0.0;
-	m_xSpeed = 0.0;
-	m_ySpeed = 0.0;
-
-	m_width = 1;
-	m_height = 1;
-
-	m_health = 1;
-	m_destroyAfterDeath = true;
-	m_invulnerable = false;
-
-	m_physical = true;
-
-	m_direction = Direction_Up;
-
-	m_sprite = new sf::Sprite();
-	m_sprite->setTexture(*g_atlas00);
-	setTextureRect(sf::IntRect());
-}
-
-GameObject::~GameObject()
-{
-	if (m_sprite)
-		delete m_sprite;
-}
-
-void GameObject::render(sf::RenderWindow* rw)
-{
-	if (m_sprite)
-	{
-		int row = int(m_y);
-		int column = int(m_x);
-
-		m_sprite->setPosition(column * kPixels, row * kPixels);
-
-		rw->draw(*m_sprite);
-	}
-}
-
-void GameObject::update(float dt)
-{
-	int oldRow = int(m_y);
-	int oldColumn = int(m_x);
-
-	float newY = m_y + m_ySpeed * dt;
-	float newX = m_x + m_xSpeed * dt;
-
-	int newRow = int(newY);
-	int newColumn = int(newX);
+public:
+	GameObject();
+	virtual ~GameObject();
 
 
-	if (oldColumn != newColumn)
-		m_game->moveObjectTo(this, newX, m_y);
-	else
-		m_x = newX;
+	virtual void render(sf::RenderWindow* rw);
+	virtual void update(float dt);
 
-	if (oldRow != newRow)
-		m_game->moveObjectTo(this, m_x, newY);
-	else
-		m_y = newY;
-}
+	virtual void intersect(GameObject* object);
 
-void GameObject::intersect(GameObject* object)
-{
+	GameObjectType getType() { return m_type; }
 
-}
+	void setGame(Game* game) { m_game = game; }
 
-void GameObject::doDamage(int damage)
-{
-	if (getInvulnerable())
-		return;
+	void setX(float x) { m_x = x; }
+	float getX() { return m_x; }
 
-	if (m_health > damage)
-		m_health -= damage;
-	else
-		m_health = 0;
-}
+	void setY(float y) { m_y = y; }
+	float getY() { return m_y; }
+
+	void setXSpeed(float xSpeed) { m_xSpeed = xSpeed; }
+	float getXSpeed() { return m_xSpeed; }
+
+	void setYSpeed(float ySpeed) { m_ySpeed = ySpeed; }
+	float getYSpeed() { return m_ySpeed; }
+
+	void setWidth(int width) { m_width = width; }
+	int getWidth() { return m_width; }
+
+	void setHeight(int height) { m_height = height; }
+	int getHeight() { return m_height; }
+
+	void setHealth(int health) { m_health = health; }
+	int getHealth() { return m_health; }
+
+	void setDestroyAfterDeath(bool destroyAfterDeath) { m_destroyAfterDeath = destroyAfterDeath; }
+	bool getDestroyAfterDeath() { return m_destroyAfterDeath; }
+
+	void setInvulnerable(bool invulnerable) { m_invulnerable = invulnerable; }
+	bool getInvulnerable() { return m_invulnerable; }
+
+	void setPhysical(bool physical) { m_physical = physical; }
+	bool getPhysical() { return m_physical; }
+
+	void setDirection(Direction direction) { m_direction = direction; }
+	Direction getDirection() { return m_direction; }
+
+	void doDamage(int damage);
+
+	void setSpriteColor(sf::Color color) { m_sprite->setColor(color); }
+	void setTextureRect(sf::IntRect rect) { m_sprite->setTextureRect(rect); }
+
+protected:
+	Game* m_game;
+	GameObjectType m_type;
+
+	float m_x;
+	float m_y;
+	float m_xSpeed;
+	float m_ySpeed;
+
+	int m_width;
+	int m_height;
+
+	int m_health;
+	bool m_destroyAfterDeath;
+	bool m_invulnerable;
+
+	bool m_physical;
+
+	Direction m_direction;
+
+	sf::Sprite* m_sprite;
+};
