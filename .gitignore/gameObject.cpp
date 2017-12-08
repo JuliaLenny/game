@@ -40,7 +40,7 @@ void GameObject::render(sf::RenderWindow* rw)
 		int row = int(m_y);
 		int column = int(m_x);
 
-		m_sprite->setPosition(column * kPixelsPerCell, row * kPixelsPerCell);
+		m_sprite->setPosition(column * kPixels, row * kPixels);
 
 		rw->draw(*m_sprite);
 	}
