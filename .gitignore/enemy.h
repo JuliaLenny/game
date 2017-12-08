@@ -4,11 +4,11 @@
 #include "level.h"
 
 // Class Ghost
-class EnemySpawner
+class Enemy
 	: public GameObject
 {
 public:
-	EnemySpawner();
+	Enemy();
 	virtual void update(float dt);
 
 private:
