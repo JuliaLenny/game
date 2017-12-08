@@ -8,6 +8,7 @@ Bullet::Bullet()
 
 	setTextureRect(kBulletImage);
 }
+
 void Bullet::render(sf::RenderWindow* rw)
 {
 	GameObject::render(rw);
