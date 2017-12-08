@@ -21,6 +21,6 @@ protected:
 	void calculateFrontCellPosition(float* x, float* y);
 
 protected:
-	float m_fireCooldownTime;
+	float m_recoveryTime;
 	float m_speed;
 };
